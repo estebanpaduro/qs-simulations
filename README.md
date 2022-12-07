@@ -7,11 +7,17 @@ From a command line:
 ```
 git clone https://github.com/estebanpaduro/qs-simulations
 ```
+
+Current version only works on Linux, windows MYOKIT release seems to be bugged for now.
+for MYOKIT installation see: http://myokit.org/linux
+
+
 ## Contents
 The scripts are organized in the following folders:
 
 * `numerical_experiments.ipynb`: Jupiter Notebook with the simulation files.
-* `FHN.mmt`: MYOKIT source for the experiment for the FHN model.
+* `FHN.mmt`: MYOKIT source for the experiment for the FitzHigh-Nagumo model.
+* `HH.mmt`: MYOKIT source for the experiment for the Hodgkin-Huxley model.
 
 ## References
 
