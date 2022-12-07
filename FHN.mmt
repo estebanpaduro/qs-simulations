@@ -1,0 +1,56 @@
+[[model]]
+nombre: FHN equation
+
+#Valores Iniciales
+
+
+membrane.V = -1.12#-0.8
+membrane.W = -0.65#0.2
+
+
+[environment]
+t = 0 bind time
+    in [ms]
+
+#Potencial de membrana
+[membrane]
+e=0.08#0.008#0.08
+y=0.5#0.5#0.7
+b=0.8
+
+dot(V)=V-(V^3/3)-W+ST.stim
+dot(W)=e*(V-y*W+b)
+ 
+
+#Estimulo
+[ST]
+use membrane.V as V
+use environment.t as t
+current = 70
+    in [uA/cm^2]
+stim = current
+    in [uA/cm^2]
+
+[[protocol]]
+# Level  Start    Length   Period   Multiplier
+1.0      0.0    10      10.0   0
+
+[[script]]
+import matplotlib.pyplot as plt
+import myokit
+
+# Get model and protocol, create simulation
+m = get_model()
+p = get_protocol()
+s = myokit.Simulation(m, p)
+
+# Run simulation
+d = s.run(1000)
+
+# Display the results
+var = next(m.states()).qname()
+plt.figure()
+plt.plot(d.time(), d[var])
+plt.title(var)
+plt.show()
+
