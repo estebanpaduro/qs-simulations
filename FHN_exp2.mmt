@@ -1,0 +1,65 @@
+[[model]]
+nombre: FHN experiment 2
+
+#Valores Iniciales
+membrane.V = -1.12
+membrane.W = -0.65
+membrane.V_A1 = -1.12
+membrane.W_A1 = -0.65
+
+
+[environment]
+t = 0 bind time
+    in [ms]
+
+#Potencial de membrana
+[membrane]
+use environment.t as t
+eps=0.08
+gamma=0.5
+beta=0.8
+
+dot(V)=V-(V^3/3)-W+EXT.stim
+dot(W)=eps*(V-gamma*W+beta)
+
+aux_func = piecewise(t<100,
+                    (1-(EXT.rho)^2/2)*V_A1-(V_A1^3/3)-W_A1,
+                    (1-(EXT.rho)^2/2)*V_A1-(V_A1^3/3)-W_A1+EXT.I*EXT.delta*(t-100))   
+dot(V_A1)=piecewise(t<100+(1/EXT.delta),
+                    aux_func,
+                    (1-(EXT.rho)^2/2)*V_A1-(V_A1^3/3)-W_A1+EXT.I)
+dot(W_A1)=eps*(V_A1-gamma*W_A1+beta)
+
+#External Stimulus
+[EXT]
+use membrane.V as V
+use environment.t as t
+stim = 0
+    in [uA/cm^2]
+delta=0
+rho=0
+I=0
+
+[[protocol]]
+# Level  Start    Length   Period   Multiplier
+1.0      0.0    10      10.0   0
+
+[[script]]
+import matplotlib.pyplot as plt
+import myokit
+
+# Get model and protocol, create simulation
+m = get_model()
+p = get_protocol()
+s = myokit.Simulation(m, p)
+
+# Run simulation
+d = s.run(1000)
+
+# Display the results
+var = next(m.states()).qname()
+plt.figure()
+plt.plot(d.time(), d[var])
+plt.title(var)
+plt.show()
+
