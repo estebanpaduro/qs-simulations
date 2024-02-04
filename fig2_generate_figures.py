@@ -1,11 +1,18 @@
+# This code has been downloaded from: 
+# https://github.com/estebanpaduro/qs-simulations
+# and it is used for the generation of the simulation data and figures
+# in the article
+# The impact of high frequency-based stability on the onset of action 
+# potentials in neuron models - E. Cerpa, N. Corrales, M. Courdurier, 
+# L. E. Medina, E. Paduro
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-import colorsys
 import os
 import matplotlib.patches as mpatches
-import FHN_generate_data_exp1 as generate
+import fig2_generate_data as generate
 from matplotlib.lines import Line2D
 from matplotlib.colors import Normalize, to_rgba
 from matplotlib import cm
@@ -128,8 +135,6 @@ def region_lambda_rho_FHN_exp1(beta, list_rho_plot, list_lambda_plot, markers, n
                labels=['Without Onset Activation', 'With Onset Activation'],
                        fontsize=25, bbox_to_anchor=(1, 0.05), 
                        loc='lower right', framealpha=1)
-    if not os.path.exists("Figures"):
-        os.makedirs("Figures") 
     plt.savefig('Figures/' + name_fig, bbox_inches='tight', pad_inches=0.5)
     plt.close()
     return
@@ -183,8 +188,24 @@ def plot_simulations_FHN_exp1(beta, list_rho, list_lambda,markers,name_fig):
     plt.legend([legend[0] for legend in legends],
                [legend[1] for legend in legends],
                bbox_to_anchor=(1, 1), loc='upper left',framealpha=1,fontsize=15,frameon=False)
-    if not os.path.exists("Figures"):
-        os.makedirs("Figures") 
     plt.savefig('Figures/' + name_fig, bbox_inches='tight', pad_inches=0.5)
     plt.close()
     return
+
+def main():  
+    if not os.path.exists("Figures"):
+        os.makedirs("Figures") 
+    betas = [0.65,0.675,0.7,0.725,0.75,0.775,0.8,0.825,0.85,0.875,0.9]
+    markers = ['*','o','P','s']
+
+    # This block generate figure 2.a and 2.b using beta=0.75
+    list_rho_plot = [0.4,0.6]
+    list_lambda_plot = [0.04,0.9]
+    region_lambda_rho_FHN_exp1(0.75, list_rho_plot,list_lambda_plot,markers,'Fig2a.png')
+    plot_simulations_FHN_exp1(0.75,list_rho_plot, list_lambda_plot,markers,'Fig2b.png')
+
+    # This block generate figure 2c 
+    curve(betas,'Fig2c.png')
+
+if __name__ == "__main__":
+    main()

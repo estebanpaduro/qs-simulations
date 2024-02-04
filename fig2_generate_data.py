@@ -1,6 +1,15 @@
+# This code has been downloaded from: 
+# https://github.com/estebanpaduro/qs-simulations
+# and it is used for the generation of the simulation data and figures
+# in the article
+# The impact of high frequency-based stability on the onset of action 
+# potentials in neuron models - E. Cerpa, N. Corrales, M. Courdurier, 
+# L. E. Medina, E. Paduro
+
 import numpy as np
 import pandas as pd
 import myokit
+import os
 from scipy.signal import find_peaks
 from scipy.optimize import fsolve
 
@@ -200,3 +209,18 @@ def run_experiment1(beta,range_rho,range_lambda):
     data = pd.DataFrame({'lambda_ln': lambda_col,'rho_ln': rho_col,'num_peaks': num_peaks_col})
     data.to_csv(f'exp1_FHN_beta_{beta}_log10.csv')
     return data
+
+
+def main():
+    ### This block generate data experiment 1 ###
+    if not os.path.exists("Data"):
+        os.makedirs("Data")
+    range_rho = [-0.9,-0.16,0.02]
+    range_lambda = [-1.8,0.06,0.03]
+    set_betas = [0.65,0.675,0.7,0.725,0.75,
+                0.775,0.8,0.825,0.85,0.875,0.9]
+    for beta in set_betas:
+        run_experiment1(beta,range_rho,range_lambda)
+
+if __name__ == "__main__":
+    main()

@@ -1,13 +1,24 @@
+# This code has been downloaded from: 
+# https://github.com/estebanpaduro/qs-simulations
+# and it is used for the generation of the simulation data and figures
+# in the article
+# The impact of high frequency-based stability on the onset of action 
+# potentials in neuron models - E. Cerpa, N. Corrales, M. Courdurier, 
+# L. E. Medina, E. Paduro
+
 import os
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 import seaborn as sns
-import FHN_generate_data_exp2 as generate
+import fig3_generate_data as generate
 import matplotlib.patches as mpatches
 from matplotlib.colors import Normalize, to_rgba
 from matplotlib.lines import Line2D
 from matplotlib import cm
+import matplotlib.pyplot as plt
+from scipy.signal import find_peaks
+
 
 # generate palette
 def generate_set1_colors(num_colors):
@@ -77,8 +88,7 @@ def curve(set_current, name_fig):
     plt.tick_params(axis='x', which='both', bottom=True, top=False, labelbottom=True, labeltop=False, size=10)
     plt.tick_params(axis='y', which='both', left=True, right=False, labelleft=True, labelright=False, size=10)
     
-    if not os.path.exists("Figures"):
-        os.makedirs("Figures") 
+
 
     plt.savefig('Figures/' + name_fig, bbox_inches='tight', pad_inches=0.5)
     plt.close()
@@ -90,7 +100,7 @@ def region_delta_rho_FHN_exp2(current, list_rho_plot, list_delta_plot, markers, 
     ----------
     current         - Required : value of current
     list_rho_plot   - Required : list of rho to indicate particular cases
-    list_delta_plot - Required : list of lambda to indicate particular cases
+    list_delta_plot - Required : list of delta to indicate particular cases
     markers         - Required : list of markers for particular cases
     name_fig        - Required : name under which he figure is saved
     Returns
@@ -140,14 +150,12 @@ def region_delta_rho_FHN_exp2(current, list_rho_plot, list_delta_plot, markers, 
     plt.xscale('log')
     plt.xlabel(r'$\delta$', fontsize=25)
     plt.ylabel(r'$\rho$', fontsize=25)
-    plt.ylim(top=1.4)
+    plt.xlim(0.005,)
+    plt.ylim(bottom=0,top=1.4)
     plt.xticks(fontsize=25)
     plt.yticks(fontsize=25)
     plt.tick_params(axis='x', which='both', bottom=True, top=False, labelbottom=True, labeltop=False, size=10)
     plt.tick_params(axis='y', which='both', left=True, right=False, labelleft=True, labelright=False, size=10)
-
-    if not os.path.exists("Figures"):
-        os.makedirs("Figures") 
     plt.savefig('Figures/' + name_fig, bbox_inches = 'tight', pad_inches = 0.5)
     plt.close()
     return
@@ -199,13 +207,31 @@ def plot_simulations_FHN_exp2(current,list_rho, list_delta,markers,name_fig):
     plt.xticks(fontsize=15)
     plt.yticks(fontsize=15)
     plt.legend([legend[0] for legend in legends],[legend[1] for legend in legends],
-               bbox_to_anchor=(1, 1), loc='upper left',framealpha=1, fontsize=15, frameon=False)
-    
-    if not os.path.exists("Figures"):
-        os.makedirs("Figures") 
-    
+               bbox_to_anchor=(1, 1), loc='upper left',framealpha=1, fontsize=15, frameon=False)  
     plt.savefig('Figures/' + name_fig, bbox_inches='tight', pad_inches=0.5)
     plt.close()
     return
 
+def main():
+    if not os.path.exists("Figures"):
+        os.makedirs("Figures") 
+    currents = [0.5,0.475,0.45,0.4,0.375,0.35,0.325,0.3,0.275,0.25,0.225,0.2,0.175,0.15,0.125,0.1]
+    markers = ['*','o','P','s']
 
+    # This block generate figure 3.a and 3.b using I_0 = 0.2
+    list_rho_plot = [0.5,1.25]
+    list_delta_plot = [0.02,0.3]
+    region_delta_rho_FHN_exp2(0.2, list_rho_plot,list_delta_plot,markers,'Fig3a.png')
+    plot_simulations_FHN_exp2(0.2, list_rho_plot, list_delta_plot,markers,'Fig3b.png')
+
+    # This block generate figure 3.c and 3.d using I_0 = 0.4
+    list_rho_plot = [0.5,1.25]
+    list_delta_plot = [0.3,0.02]
+    region_delta_rho_FHN_exp2(0.4, list_rho_plot,list_delta_plot,markers,'Fig3c.png')
+    plot_simulations_FHN_exp2(0.4, list_rho_plot, list_delta_plot,markers,'Fig3d.png')
+
+    # This block generate figure 3.e
+    curve(currents,name_fig='Fig3e.png')
+
+if __name__ == "__main__":
+    main()
