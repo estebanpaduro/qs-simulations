@@ -75,7 +75,10 @@ def curve(set_current, name_fig):
     norm_current = Normalize(vmin=np.min(set_current), vmax=np.max(set_current))
     sm_current = cm.ScalarMappable(norm=norm_current, cmap=sns.cubehelix_palette(start=.5, rot=-.5, reverse= False, as_cmap=True))
     sm_current.set_array([])
-    cbar = plt.colorbar(sm_current, ticks=np.linspace(np.min(set_current), np.max(set_current), 11))
+    ax = plt.gca()
+    cbar = ax.figure.colorbar(sm_current, ax=ax, ticks=np.linspace(np.min(set_current), np.max(set_current), 11))
+
+    #cbar = plt.colorbar(sm_current, ticks=np.linspace(np.min(set_current), np.max(set_current), 11))
     cbar.set_label(r'$I_0$', fontsize=25, rotation=0)
     cbar.ax.tick_params(labelsize=20)
     cbar.set_ticks(np.linspace(min(set_current), max(set_current), 11))

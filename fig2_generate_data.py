@@ -5,6 +5,7 @@
 # The impact of high frequency-based stability on the onset of action 
 # potentials in neuron models - E. Cerpa, N. Corrales, M. Courdurier, 
 # L. E. Medina, E. Paduro
+# Myokit version 1.35.4
 
 import numpy as np
 import pandas as pd
@@ -74,22 +75,17 @@ def simulation_FHN_exp1(model, protocol, func, time, threshold , parameters, ini
     
     ## Initial Conditions ##
     v = mod.get('membrane.V')
-    v.set_state_value(initial[0])
+    v.set_initial_value(initial[0])
     w = mod.get('membrane.W')
-    w.set_state_value(initial[1])
+    w.set_initial_value(initial[1])
 
     v_AV = mod.get('membrane.V_A1')
-    v_AV.set_state_value(initial[0])
+    v_AV.set_initial_value(initial[0])
     w_AV = mod.get('membrane.W_A1')
-    w_AV.set_state_value(initial[1])
-    
-    ### Validate model ###
-    #print(m.warnings())
-    ######################
-    
+    w_AV.set_initial_value(initial[1])
+       
     ## Simulation ##  
     s = myokit.Simulation(mod,prot)
-    
     ### step default ###
     s.set_max_step_size(dtmax=0.005)
     s.set_min_step_size(dtmin=None)
@@ -188,9 +184,6 @@ def run_experiment1(beta,range_rho,range_lambda):
         lamb = 10**lamb_log
         for rho_log in rho_range:
             rho = 10**rho_log
-            #rho = ((r.round(4))/(lamb.round(4))).round(4)
-
-            #print('{:.1%}'.format(1.0*progress/total))
             progress = progress+1
             param= parameters_simulation_FHN_exp1(beta,rho,lamb)
             _, list_peaks = simulation_FHN_exp1(param["model"]

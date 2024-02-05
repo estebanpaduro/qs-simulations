@@ -81,14 +81,14 @@ def simulation_FHN_exp2(model, protocol, func, time, threshold , parameters_hf, 
     
     ## Initial Conditions ##
     v = mod.get('membrane.V')
-    v.set_state_value(initial[0])
+    v.set_initial_value(initial[0])
     w = mod.get('membrane.W')
-    w.set_state_value(initial[1])
+    w.set_initial_value(initial[1])
 
     v_AV = mod.get('membrane.V_A1')
-    v_AV.set_state_value(initial[0])
+    v_AV.set_initial_value(initial[0])
     w_AV = mod.get('membrane.W_A1')
-    w_AV.set_state_value(initial[1])
+    w_AV.set_initial_value(initial[1])
     
     ### Validate model ###
     #print(m.warnings())

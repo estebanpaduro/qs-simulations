@@ -61,8 +61,9 @@ def curve(set_beta,name_fig):
 
     norm_current = Normalize(vmin=np.min(set_beta), vmax=np.max(set_beta))
     sm_current = cm.ScalarMappable(norm=norm_current, cmap=sns.cubehelix_palette(start=.5, rot=-.5, as_cmap=True))
-    sm_current.set_array([])
-    cbar = plt.colorbar(sm_current, ticks=np.linspace(np.min(set_beta), np.max(set_beta), 11))
+    sm_current.set_array([]) 
+    ax = plt.gca()
+    cbar = ax.figure.colorbar(sm_current, ax=ax, ticks=np.linspace(np.min(set_beta), np.max(set_beta), 11))
     cbar.set_label(r'  $\beta$', fontsize=25,rotation=0)
     cbar.ax.tick_params(labelsize=20)
     cbar.set_ticks(np.linspace(min(set_beta), max(set_beta), 11))

@@ -1,18 +1,15 @@
-# This code has been downloaded from: 
-# https://github.com/estebanpaduro/qs-simulations
-# and it is used for the generation of the simulation data and figures
-# in the article
-# The impact of high frequency-based stability on the onset of action 
-# potentials in neuron models - E. Cerpa, N. Corrales, M. Courdurier, 
-# L. E. Medina, E. Paduro
-#
-# Myokit model file
-# follow installation instruction in https://myokit.org/install
-
 [[model]]
 nombre: FHN experiment 2
-
-#Valores Iniciales
+desc: """
+        This code has been downloaded from: 
+        https://github.com/estebanpaduro/qs-simulations
+        and it is used for the generation of the simulation data and figures
+        in the article
+        The impact of high frequency-based stability on the onset of action 
+        potentials in neuron models - E. Cerpa, N. Corrales, M. Courdurier, 
+        L. E. Medina, E. Paduro
+      """
+#Initial Values
 membrane.V = -1.12
 membrane.W = -0.65
 membrane.V_A1 = -1.12
@@ -23,7 +20,7 @@ membrane.W_A1 = -0.65
 t = 0 bind time
     in [ms]
 
-#Potencial de membrana
+#membrane potential
 [membrane]
 use environment.t as t
 eps=0.08
@@ -67,10 +64,10 @@ s = myokit.Simulation(m, p)
 # Run simulation
 d = s.run(1000)
 
-# Display the results
-var = next(m.states()).qname()
-plt.figure()
-plt.plot(d.time(), d[var])
-plt.title(var)
-plt.show()
+# (optinal) Display the results
+#var = next(m.states()).qname()
+#plt.figure()
+#plt.plot(d.time(), d[var])
+#plt.title(var)
+#plt.show()
 

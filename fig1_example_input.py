@@ -1,3 +1,10 @@
+# This code has been downloaded from: 
+# https://github.com/estebanpaduro/qs-simulations
+# and it is used for the generation of the simulation data and figures
+# in the article
+# The impact of high frequency-based stability on the onset of action 
+# potentials in neuron models - E. Cerpa, N. Corrales, M. Courdurier, 
+# L. E. Medina, E. Paduro
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -7,7 +14,7 @@ import os
 if not os.path.exists("Figures"):
     os.makedirs("Figures")
 
-""" Figure 1: Example I(t)"""
+" Figure 1: Example I(t)"
 
 lambda_val = 0.05
 rho = 1
