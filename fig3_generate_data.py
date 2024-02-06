@@ -221,10 +221,8 @@ def run_experiment2(current, range_delta, range_rho):
             printProgressBar(progress, total, prefix = 'Progress:', suffix = 'Complete', length = 50)
     data = pd.DataFrame({'delta_ln': delta_col,'rho_ln': rho_col,'num_peaks': num_peaks_col})
     data['current'] = current
-    data1 = pd.read_csv(f'Data/exp2_FHN_I_{current}_log10.csv')
-    df = pd.concat([data1,data],ignore_index=True).reset_index(drop=True)
-    df.to_csv(f'Data/exp2_FHN_I_{current}_log10.csv')
-    return df
+    data.to_csv(f'Data/exp2_FHN_I_{current}_log10.csv')
+    return data
 
 
 def main():
