@@ -17,11 +17,17 @@ for MYOKIT installation see: http://myokit.org/linux
 
 ## Requirements
 The following code ran with the following library versions:
+
 matplotlib  ==  3.8.2
+
 Myokit      ==  1.35.4
+
 numpy       ==  1.24.3
+
 pandas      ==  2.1.1
+
 seaborn     ==  0.13.2
+
 scipy       ==  1.11.3
 
 
