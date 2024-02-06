@@ -221,15 +221,17 @@ def run_experiment2(current, range_delta, range_rho):
             printProgressBar(progress, total, prefix = 'Progress:', suffix = 'Complete', length = 50)
     data = pd.DataFrame({'delta_ln': delta_col,'rho_ln': rho_col,'num_peaks': num_peaks_col})
     data['current'] = current
-    data.to_csv(f'Data/exp2_FHN_I_{current}_log10.csv')
-    return data
+    data1 = pd.read_csv(f'Data/exp2_FHN_I_{current}_log10.csv')
+    df = pd.concat([data1,data],ignore_index=True).reset_index(drop=True)
+    df.to_csv(f'Data/exp2_FHN_I_{current}_log10.csv')
+    return df
 
 
 def main():
     if not os.path.exists("Data"):
         os.makedirs("Data")
     range_delta = [-2.2,0.05,0.05]
-    range_rho = [-0.9,0.22,0.02]
+    range_rho = [-1.1,0.22,0.02]
     set_currents = [0.5, 0.475, 0.45, 0.425, 0.4,
                     0.375, 0.35, 0.325, 0.3,
                     0.275, 0.25, 0.225, 0.2,

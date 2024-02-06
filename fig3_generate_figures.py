@@ -36,7 +36,7 @@ def curve(set_current, name_fig):
     """Boundary curve that separates the region with and without onset response
     Parameters
     ----------
-    set_current - Required : list of current, para ver resultados
+    set_current - Required : list of current
     name_fig    - Required : name under which he figure is saved
     Returns
     -------
@@ -55,20 +55,17 @@ def curve(set_current, name_fig):
         data['delta'] = 10**data['delta_ln']
         data_off = data[data['num_peaks'] == 0]
         delta_off = sorted(list(data_off['delta'].unique()),reverse=True)
-        rho_off = list(data_off['rho'].unique())
+        rho_off = list(data['rho'].unique())
         delta = []
         rho = []
 
-        for d in delta_off:
+        for d in delta_off:   
             minimo = data_off[data_off['delta'] == d]['rho'].min()
             rho.append(minimo)
             delta.append(d)
+            if minimo<=min(rho_off):
+                break
         df = pd.DataFrame({'delta':delta, 'rho':rho})
-        if min(rho_off) <= data['rho'].min():
-            df2 = df[df['rho'] == min(rho_off)].drop_duplicates(subset='rho')
-            df1 = df[df['rho'] != min(rho_off)]
-            df = pd.concat([df1, df2], ignore_index=True).reset_index(drop=True)
-        
         plt.plot(df['delta'],df['rho'], color=colors[i], linewidth=3)
         i = i+1
     
@@ -78,8 +75,7 @@ def curve(set_current, name_fig):
     ax = plt.gca()
     cbar = ax.figure.colorbar(sm_current, ax=ax, ticks=np.linspace(np.min(set_current), np.max(set_current), 11))
 
-    #cbar = plt.colorbar(sm_current, ticks=np.linspace(np.min(set_current), np.max(set_current), 11))
-    cbar.set_label(r'$I_0$', fontsize=25, rotation=0)
+    cbar.set_label(r'$\quad I_0$', fontsize=25, rotation=0)
     cbar.ax.tick_params(labelsize=20)
     cbar.set_ticks(np.linspace(min(set_current), max(set_current), 11))
     
@@ -88,10 +84,9 @@ def curve(set_current, name_fig):
     plt.xscale('log')
     plt.xticks(fontsize=25)
     plt.yticks(fontsize=25)
+    plt.ylim(bottom=0,top=1.4)
     plt.tick_params(axis='x', which='both', bottom=True, top=False, labelbottom=True, labeltop=False, size=10)
     plt.tick_params(axis='y', which='both', left=True, right=False, labelleft=True, labelright=False, size=10)
-    
-
 
     plt.savefig('Figures/' + name_fig, bbox_inches='tight', pad_inches=0.5)
     plt.close()
@@ -129,7 +124,7 @@ def region_delta_rho_FHN_exp2(current, list_rho_plot, list_delta_plot, markers, 
 
     plt.figure(figsize = (10,10))
     plt.fill_between(delta_one,data_one['rho'].min(), rho_max_one, hatch='//', step='pre', edgecolor='black', facecolor='none', linewidth=0)
-    plt.fill_between(data_repetitive['delta'], data_repetitive['rho'].max(), data_repetitive['rho'], hatch='o', step='pre', edgecolor='black', facecolor='none', linewidth=0)
+    plt.fill_between(data_repetitive['delta'], data_repetitive['rho'].max(), data_repetitive['rho'].min(), hatch='o', step='pre', edgecolor='black', facecolor='none', linewidth=0)
     
     not_legend = mpatches.Circle((0, 0), 0.1, facecolor='white', edgecolor='black', hatch=None)
     one_legend = mpatches.Circle((0, 0), 0.1, facecolor='white', edgecolor='black', hatch='//')
@@ -143,7 +138,7 @@ def region_delta_rho_FHN_exp2(current, list_rho_plot, list_delta_plot, markers, 
 
     if len(list(data_repetitive['delta'].unique()))>0:
         plt.legend(handles=[not_legend, one_legend, repetitive_legend], 
-               labels=['Without Initial Activation', 'With Initial Activation', 'Repetitive Action Potential'],
+               labels=['Without Onset Activation', 'With Onset Activation', 'Repetitive Action Potential'],
                fontsize = 25, bbox_to_anchor=(1, 0.05), loc ='lower right', framealpha=1)
     else:
         plt.legend(handles=[not_legend, one_legend], 
